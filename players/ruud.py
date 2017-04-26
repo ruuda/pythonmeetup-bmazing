@@ -2,7 +2,6 @@ from game import moves
 from game.mazefield_attributes import Start, Path, Finish, Wall
 from players.player import Player
 from heapq import heappush, heappop
-from os import abort
 
 directions = [moves.RIGHT, moves.UP, moves.LEFT, moves.DOWN]
 
@@ -25,10 +24,6 @@ def offset(direction):
     }[direction]
 
 
-def directions_where(surroundings, expected):
-    return [d for d in directions if look_at(surroundings, d) is expected]
-
-
 def add(p, q):
     (px, py) = p
     (qx, qy) = q
@@ -43,7 +38,6 @@ class Ruud(Player):
             (0, 0): Start
         }
         self.position = (0, 0)
-        self.current_route = []
 
 
     def observe(self, surroundings):
@@ -88,7 +82,7 @@ class Ruud(Player):
 
     def turn(self, surroundings):
         # If we can reach the finish, go there.
-        for d in directions_where(surroundings, Finish):
+        for d in [d for d in directions if look_at(surroundings, d) is Finish]:
             return d
 
         self.observe(surroundings)
