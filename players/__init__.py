@@ -1,5 +1,6 @@
 from .sampleplayer import SamplePlayer
 from .byteplayer import BytePlayer
+from .ruud import Ruud
 
 
 def get_player_by_name(name):
