@@ -8,29 +8,25 @@ directions = [moves.RIGHT, moves.UP, moves.LEFT, moves.DOWN]
 
 
 def look_at(surroundings, direction):
-    if direction == moves.RIGHT:
-        return surroundings.right
-    elif direction == moves.UP:
-        return surroundings.up
-    elif direction == moves.LEFT:
-        return surroundings.left
-    elif direction == moves.DOWN:
-        return surroundings.down
+    return {
+        moves.RIGHT: surroundings.right,
+        moves.UP: surroundings.up,
+        moves.LEFT: surroundings.left,
+        moves.DOWN: surroundings.down
+    }[direction]
+
+
+def offset(direction):
+    return {
+        moves.RIGHT: (1, 0),
+        moves.UP: (0, 1),
+        moves.LEFT: (-1, 0),
+        moves.DOWN: (0, -1)
+    }[direction]
 
 
 def directions_where(surroundings, expected):
     return [d for d in directions if look_at(surroundings, d) is expected]
-
-
-def offset(direction):
-    if direction == moves.RIGHT:
-        return (1, 0)
-    elif direction == moves.UP:
-        return (0, 1)
-    elif direction == moves.LEFT:
-        return (-1, 0)
-    elif direction == moves.DOWN:
-        return (0, -1)
 
 
 def add(p, q):
@@ -56,9 +52,7 @@ class Ruud(Player):
 
     def route_to_nearest_unknown(self):
         heap = [(0, self.position)]
-        done = {
-            self.position: self.position
-        }
+        done = {self.position: self.position}
         done_moves = {}
         goal = None
 
@@ -97,10 +91,7 @@ class Ruud(Player):
         for d in directions_where(surroundings, Finish):
             return d
 
-        # Look around, store what we learned.
         self.observe(surroundings)
-
-        # Move towards the nearest unknown position.
         move = self.route_to_nearest_unknown().pop()
         self.position = add(self.position, offset(move))
         return move
