@@ -45,6 +45,7 @@ class Ruud(Player):
             self.maze[add(self.position, offset(d))] = look_at(surroundings, d)
 
     def route_to_nearest_unknown(self):
+        global directions
         heap = [(0, self.position)]
         done = {self.position: self.position}
         done_moves = {}
@@ -63,6 +64,7 @@ class Ruud(Player):
                 done_moves[dpos] = d
 
                 if at is None:
+                    directions = directions[1:] + directions[:1]
                     goal = dpos
                     break
                 elif at is Path:
